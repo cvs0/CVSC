@@ -1,0 +1,17 @@
+C:\Users\cvs0_\Documents\GitHub\CVSC\CVSC\CVSC\bin\Debug\net6.0\CVSC.exe
+C:\Users\cvs0_\Documents\GitHub\CVSC\CVSC\CVSC\bin\Debug\net6.0\CVSC.deps.json
+C:\Users\cvs0_\Documents\GitHub\CVSC\CVSC\CVSC\bin\Debug\net6.0\CVSC.runtimeconfig.json
+C:\Users\cvs0_\Documents\GitHub\CVSC\CVSC\CVSC\bin\Debug\net6.0\CVSC.dll
+C:\Users\cvs0_\Documents\GitHub\CVSC\CVSC\CVSC\bin\Debug\net6.0\CVSC.pdb
+C:\Users\cvs0_\Documents\GitHub\CVSC\CVSC\CVSC\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\Users\cvs0_\Documents\GitHub\CVSC\CVSC\CVSC\obj\Debug\net6.0\CVSC.csproj.AssemblyReference.cache
+C:\Users\cvs0_\Documents\GitHub\CVSC\CVSC\CVSC\obj\Debug\net6.0\CVSC.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\cvs0_\Documents\GitHub\CVSC\CVSC\CVSC\obj\Debug\net6.0\CVSC.AssemblyInfoInputs.cache
+C:\Users\cvs0_\Documents\GitHub\CVSC\CVSC\CVSC\obj\Debug\net6.0\CVSC.AssemblyInfo.cs
+C:\Users\cvs0_\Documents\GitHub\CVSC\CVSC\CVSC\obj\Debug\net6.0\CVSC.csproj.CoreCompileInputs.cache
+C:\Users\cvs0_\Documents\GitHub\CVSC\CVSC\CVSC\obj\Debug\net6.0\CVSC.csproj.CopyComplete
+C:\Users\cvs0_\Documents\GitHub\CVSC\CVSC\CVSC\obj\Debug\net6.0\CVSC.dll
+C:\Users\cvs0_\Documents\GitHub\CVSC\CVSC\CVSC\obj\Debug\net6.0\refint\CVSC.dll
+C:\Users\cvs0_\Documents\GitHub\CVSC\CVSC\CVSC\obj\Debug\net6.0\CVSC.pdb
+C:\Users\cvs0_\Documents\GitHub\CVSC\CVSC\CVSC\obj\Debug\net6.0\CVSC.genruntimeconfig.cache
+C:\Users\cvs0_\Documents\GitHub\CVSC\CVSC\CVSC\obj\Debug\net6.0\ref\CVSC.dll
