@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -7,14 +8,39 @@ class Program
 {
     static void Main(string[] args)
     {
-        if (args.Length != 1)
+        if (args.Length < 2)
         {
-            Console.WriteLine("Usage: cvsc.exe <project_directory>");
+            Console.WriteLine("Usage: cvsc.exe create <project_directory> OR cvsc.exe run <file>");
             return;
         }
 
-        string projectDirectory = args[0];
+        string mode = args[0].ToLower();
 
+        if (mode == "create" && args.Length != 3)
+        {
+            Console.WriteLine("Usage: cvsc.exe create <project_directory>");
+            return;
+        }
+        else if (mode == "run" && args.Length != 2)
+        {
+            Console.WriteLine("Usage: cvsc.exe run <file>");
+            return;
+        }
+
+        if (mode == "create")
+        {
+            string projectDirectory = args[2];
+            CreateProject(projectDirectory);
+        }
+        else if (mode == "run")
+        {
+            string filePath = args[1];
+            RunProject(filePath);
+        }
+    }
+
+    static void CreateProject(string projectDirectory)
+    {
         // Default values
         string projectName = "MyCVSCodeProject";
         string projectVersion = "1.0.0";
@@ -22,7 +48,6 @@ class Program
         string projectAuthor = "Your Name";
         string githubRepository = "https://github.com/cvs0/cvscode";
         string projectId = "";
-
 
         // Prompt the user for project details
         Console.Write("Enter project name (default: MyCVSCodeProject): ");
@@ -92,10 +117,58 @@ class Program
         }
 
         string mainCvsPath = Path.Combine(srcDirectory, "main.cvs");
-        File.WriteAllText(mainCvsPath, "console.log('Hello, CVSCode!');");
+        File.WriteAllText(mainCvsPath, "let x = 45;");
 
         Console.WriteLine("CVSCode project created in: " + projectDirectory);
     }
+
+    static void RunProject(string filePath)
+    {
+        string cvsCodeLocalDirectory = @"C:\Program Files\CVSCode\Local";
+        string rundenoScriptPath = Path.Combine(cvsCodeLocalDirectory, "rundeno.bat");
+        string denoCommand = $"\"{rundenoScriptPath}\" \"{filePath}\"";
+        ExecuteCommand(denoCommand, cvsCodeLocalDirectory);
+    }
+
+    // Helper function to execute a command in the current directory
+    static void ExecuteCommand(string command, string workingDirectory)
+    {
+        ProcessStartInfo processStartInfo = new ProcessStartInfo
+        {
+            FileName = "cmd.exe",
+            RedirectStandardInput = true,
+            UseShellExecute = false,
+            RedirectStandardOutput = true,
+            CreateNoWindow = false
+        };
+
+        Process process = new Process
+        {
+            StartInfo = processStartInfo,
+            EnableRaisingEvents = true,
+        };
+
+        // Set the working directory for the process
+        process.StartInfo.WorkingDirectory = workingDirectory;
+
+        process.Start();
+
+        // Send the command to the command prompt
+        process.StandardInput.WriteLine(command);
+        process.StandardInput.Flush();
+        process.StandardInput.Close();
+
+        // Display the command prompt output
+        string output = process.StandardOutput.ReadToEnd();
+        Console.WriteLine(output);
+
+        process.WaitForExit();
+        process.Close();
+    }
+
+
+
+
 
     static string MakeProjectId(string projectName)
     {
