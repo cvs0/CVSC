@@ -159,10 +159,11 @@ class Program
     static void RunProject(string filePath)
     {
         string cvsCodeLocalDirectory = @"C:\Program Files\CVSCode\Local";
-        string rundenoScriptPath = Path.Combine(cvsCodeLocalDirectory, "rundeno.bat");
-        string denoCommand = $"\"{rundenoScriptPath}\" \"{filePath}\"";
+        string denoCommand = $"deno run -A main.ts --run \"{filePath}\"";
+        Console.Clear();
         ExecuteCommand(denoCommand, cvsCodeLocalDirectory);
     }
+
 
     // Helper function to execute a command in the current directory
     static void ExecuteCommand(string command, string workingDirectory)
