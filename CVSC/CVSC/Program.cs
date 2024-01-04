@@ -52,6 +52,18 @@ class Program
                 RunProject(filePath);
             }
         }
+        catch (IOException ex)
+        {
+            Console.WriteLine($"IOException: {ex.Message}");
+        }
+        catch (OutOfMemoryException ex)
+        {
+            Console.WriteLine($"OutOfMemoryException: {ex.Message}");
+        }
+        catch (ArgumentOutOfRangeException ex)
+        {
+            Console.WriteLine($"ArgumentOutOfRangeException: {ex.Message}");
+        }
         catch (Exception ex)
         {
             Console.WriteLine($"Error: {ex.Message}");
@@ -61,98 +73,117 @@ class Program
     // Function to create a CVSCode project
     static void CreateProject(string projectDirectory)
     {
-        // Default values
-        string projectName = "MyCVSCodeProject";
-        string projectVersion = "1.0.0";
-        string projectDescription = "Example CVSCode project";
-        string projectAuthor = "Your Name";
-        string githubRepository = "https://github.com/cvs0/cvscode";
-        string projectLicense = "MIT";
-        string projectId = "";
-
-        // Prompt the user for project details
-        Console.Write("Enter project name (default: MyCVSCodeProject): ");
-        string input = Console.ReadLine().Trim();
-        if (!string.IsNullOrEmpty(input))
+        try
         {
-            projectName = input;
-        }
+            // Default values
+            string projectName = "MyCVSCodeProject";
+            string projectVersion = "1.0.0";
+            string projectDescription = "Example CVSCode project";
+            string projectAuthor = "Your Name";
+            string githubRepository = "https://github.com/cvs0/cvscode";
+            string projectLicense = "MIT";
+            string projectId = "";
 
-        Console.Write("Enter project version (default: 1.0.0): ");
-        input = Console.ReadLine().Trim();
-        if (!string.IsNullOrEmpty(input))
+            // Prompt the user for project details
+            Console.Write("Enter project name (default: MyCVSCodeProject): ");
+            string input = Console.ReadLine().Trim();
+            if (!string.IsNullOrEmpty(input))
+            {
+                projectName = input;
+            }
+
+            Console.Write("Enter project version (default: 1.0.0): ");
+            input = Console.ReadLine().Trim();
+            if (!string.IsNullOrEmpty(input))
+            {
+                projectVersion = input;
+            }
+
+            Console.Write("Enter project description (default: Example CVSCode project): ");
+            input = Console.ReadLine().Trim();
+            if (!string.IsNullOrEmpty(input))
+            {
+                projectDescription = input;
+            }
+
+            Console.Write("Enter project author (default: Your Name): ");
+            input = Console.ReadLine().Trim();
+            if (!string.IsNullOrEmpty(input))
+            {
+                projectAuthor = input;
+            }
+
+            Console.Write("Enter GitHub repository URL: ");
+            input = Console.ReadLine().Trim();
+            if (!string.IsNullOrEmpty(input))
+            {
+                githubRepository = input;
+            }
+
+            Console.Write("Enter the license type (default: MIT): ");
+            input = Console.ReadLine().Trim();
+            if (!string.IsNullOrEmpty(input) && validLicenses.Contains(input.ToLower()))
+            {
+                projectLicense = input;
+            }
+            else
+            {
+                Console.WriteLine("Invalid license type. Using default: MIT");
+            }
+
+            // Create the project directory if it doesn't exist
+            if (!Directory.Exists(projectDirectory))
+            {
+                Directory.CreateDirectory(projectDirectory);
+            }
+
+            projectId = MakeProjectId(projectName);
+
+            // Create the package.json file
+            string packageJsonPath = Path.Combine(projectDirectory, "package.json");
+            JObject packageJson = new JObject(
+                new JProperty("name", projectName),
+                new JProperty("id", projectId),
+                new JProperty("version", projectVersion),
+                new JProperty("description", projectDescription),
+                new JProperty("author", projectAuthor),
+                new JProperty("repository", new JObject(
+                    new JProperty("type", "git"),
+                    new JProperty("url", githubRepository)
+                )),
+                new JProperty("license", projectLicense)
+            );
+
+            File.WriteAllText(packageJsonPath, packageJson.ToString());
+
+            // Create the src directory and main.cvs file
+            string srcDirectory = Path.Combine(projectDirectory, "src");
+            if (!Directory.Exists(srcDirectory))
+            {
+                Directory.CreateDirectory(srcDirectory);
+            }
+
+            string mainCvsPath = Path.Combine(srcDirectory, "main.cvs");
+            File.WriteAllText(mainCvsPath, "let x = 45;");
+
+            Console.WriteLine("CVSCode project created in: " + projectDirectory);
+        }
+        catch (IOException ex)
         {
-            projectVersion = input;
+            Console.WriteLine($"IOException: {ex.Message}");
         }
-
-        Console.Write("Enter project description (default: Example CVSCode project): ");
-        input = Console.ReadLine().Trim();
-        if (!string.IsNullOrEmpty(input))
+        catch (OutOfMemoryException ex)
         {
-            projectDescription = input;
+            Console.WriteLine($"OutOfMemoryException: {ex.Message}");
         }
-
-        Console.Write("Enter project author (default: Your Name): ");
-        input = Console.ReadLine().Trim();
-        if (!string.IsNullOrEmpty(input))
+        catch (ArgumentOutOfRangeException ex)
         {
-            projectAuthor = input;
+            Console.WriteLine($"ArgumentOutOfRangeException: {ex.Message}");
         }
-
-        Console.Write("Enter GitHub repository URL: ");
-        input = Console.ReadLine().Trim();
-        if (!string.IsNullOrEmpty(input))
+        catch (Exception ex)
         {
-            githubRepository = input;
+            Console.WriteLine($"Error: {ex.Message}");
         }
-
-        Console.Write("Enter the license type (default: MIT): ");
-        input = Console.ReadLine().Trim();
-        if (!string.IsNullOrEmpty(input) && validLicenses.Contains(input.ToLower()))
-        {
-            projectLicense = input;
-        }
-        else
-        {
-            Console.WriteLine("Invalid license type. Using default: MIT");
-        }
-
-        // Create the project directory if it doesn't exist
-        if (!Directory.Exists(projectDirectory))
-        {
-            Directory.CreateDirectory(projectDirectory);
-        }
-
-        projectId = MakeProjectId(projectName);
-
-        // Create the package.json file
-        string packageJsonPath = Path.Combine(projectDirectory, "package.json");
-        JObject packageJson = new JObject(
-            new JProperty("name", projectName),
-            new JProperty("id", projectId),
-            new JProperty("version", projectVersion),
-            new JProperty("description", projectDescription),
-            new JProperty("author", projectAuthor),
-            new JProperty("repository", new JObject(
-                new JProperty("type", "git"),
-                new JProperty("url", githubRepository)
-            )),
-            new JProperty("license", projectLicense)
-        );
-
-        File.WriteAllText(packageJsonPath, packageJson.ToString());
-
-        // Create the src directory and main.cvs file
-        string srcDirectory = Path.Combine(projectDirectory, "src");
-        if (!Directory.Exists(srcDirectory))
-        {
-            Directory.CreateDirectory(srcDirectory);
-        }
-
-        string mainCvsPath = Path.Combine(srcDirectory, "main.cvs");
-        File.WriteAllText(mainCvsPath, "let x = 45;");
-
-        Console.WriteLine("CVSCode project created in: " + projectDirectory);
     }
 
     // Function to run a CVSCode project
